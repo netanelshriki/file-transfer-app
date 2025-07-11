@@ -34,10 +34,45 @@ A beautiful, secure, and effortless file transfer application that works across 
 
 ## 📦 Installation
 
-### Windows
+### Windows 11 (MSI Installer)
+
+#### Option 1: Download Pre-built Installer
 1. Download `SecureTransfer-Setup.msi` from [Releases](../../releases)
-2. Run the installer and follow the setup wizard
-3. Launch from Start Menu or desktop shortcut
+2. Right-click the MSI file → "Run as administrator"
+3. Follow the installation wizard
+4. Launch from Start Menu or desktop shortcut
+
+#### Option 2: Build Your Own MSI Installer
+**Prerequisites:**
+- Windows 11 with PowerShell
+- Java 21 LTS ([Download from Oracle](https://www.oracle.com/java/technologies/downloads/#java21) or [OpenJDK](https://adoptium.net/temurin/releases/?version=21))
+- Maven 3.8+ ([Download from Apache](https://maven.apache.org/download.cgi))
+- Git ([Download from Git](https://git-scm.com/download/win))
+
+**Step-by-Step Build Instructions:**
+```powershell
+# 1. Clone the repository
+git clone https://github.com/netanelshriki/file-transfer-app.git
+cd file-transfer-app
+
+# 2. Navigate to desktop project
+cd desktop
+
+# 3. Build the MSI installer (this will take 5-10 minutes)
+mvn clean compile jpackage:jpackage -Pwindows-msi
+
+# 4. Find your installer
+# The MSI file will be created in: desktop\target\installer\SecureTransfer-1.0.0.msi
+```
+
+**Install Your Built MSI:**
+```powershell
+# Navigate to the installer directory
+cd target\installer
+
+# Install the MSI (run as administrator)
+msiexec /i SecureTransfer-1.0.0.msi /qb
+```
 
 ### Linux
 **Ubuntu/Debian:**
@@ -53,11 +88,76 @@ chmod +x SecureTransfer.AppImage
 ./SecureTransfer.AppImage
 ```
 
-### Android
+### Android Mobile
+
+#### Option 1: Download Pre-built APK
 1. Download `SecureTransfer.apk` from [Releases](../../releases)
-2. Enable "Install from unknown sources" in Settings
-3. Install the APK file
+2. On your Android device: Settings → Security → "Install unknown apps" → Enable for your browser/file manager
+3. Open the APK file and tap "Install"
 4. Launch from app drawer
+
+#### Option 2: Build Your Own APK
+**Prerequisites:**
+- Windows 11, macOS, or Linux
+- Java 21 LTS
+- Android Studio or Android SDK Command Line Tools
+- Git
+
+**Step-by-Step Build Instructions:**
+
+**Windows 11:**
+```powershell
+# 1. Install Android SDK Command Line Tools
+# Download from: https://developer.android.com/studio#command-tools
+# Extract to: C:\Android\cmdline-tools\latest\
+
+# 2. Set environment variables
+$env:ANDROID_HOME = "C:\Android"
+$env:PATH += ";C:\Android\cmdline-tools\latest\bin;C:\Android\platform-tools"
+
+# 3. Accept Android licenses
+sdkmanager --licenses
+
+# 4. Clone and build
+git clone https://github.com/netanelshriki/file-transfer-app.git
+cd file-transfer-app\android
+
+# 5. Build release APK
+.\gradlew assembleRelease
+
+# 6. Find your APK
+# The APK will be created in: android\app\build\outputs\apk\release\app-release.apk
+```
+
+**macOS/Linux:**
+```bash
+# 1. Install Android SDK Command Line Tools
+# Download from: https://developer.android.com/studio#command-tools
+# Extract to: ~/Android/cmdline-tools/latest/
+
+# 2. Set environment variables (add to ~/.bashrc or ~/.zshrc)
+export ANDROID_HOME=~/Android
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+
+# 3. Accept Android licenses
+sdkmanager --licenses
+
+# 4. Clone and build
+git clone https://github.com/netanelshriki/file-transfer-app.git
+cd file-transfer-app/android
+
+# 5. Build release APK
+./gradlew assembleRelease
+
+# 6. Find your APK
+# The APK will be created in: android/app/build/outputs/apk/release/app-release.apk
+```
+
+**Install Your Built APK:**
+1. Copy the APK file to your Android device (via USB, cloud storage, or email)
+2. On your Android device: Settings → Security → "Install unknown apps" → Enable for your file manager
+3. Open the APK file and tap "Install"
+4. Launch "SecureTransfer" from your app drawer
 
 ## 🚀 Quick Start
 
